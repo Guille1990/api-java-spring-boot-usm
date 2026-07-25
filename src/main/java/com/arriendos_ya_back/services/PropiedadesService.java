@@ -1,9 +1,9 @@
 package com.arriendos_ya_back.services;
 
-import com.arriendos_ya_back.models.arrendatario;
 import com.arriendos_ya_back.models.propiedad;
+import com.arriendos_ya_back.models.propietario;
 import com.arriendos_ya_back.repositories.PropiedadesRepository;
-import com.arriendos_ya_back.repositories.ArrendatariosRepository;
+import com.arriendos_ya_back.repositories.PropietariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -16,7 +16,7 @@ public class PropiedadesService {
     private PropiedadesRepository propiedadesRepository;
 
     @Autowired
-    private ArrendatariosRepository arrendatariosRepository;
+    private PropietariosRepository propietariosRepository;
 
     public List<propiedad> listarPropiedades() {
         return propiedadesRepository.findAll();
@@ -26,23 +26,33 @@ public class PropiedadesService {
         return propiedadesRepository.findById(id);
     }
 
-    public propiedad guardarPropiedades(propiedad propiedad) {
-        return propiedadesRepository.save(propiedad);
+    public Optional<propiedad> guardarPropiedades(propiedad propiedad) {
+        if (propiedad.getPropietario() == null || propiedad.getPropietario().getRut() == null) {
+            return Optional.empty();
+        }
+
+        Optional<propietario> propietario = propietariosRepository
+                .findById(propiedad.getPropietario().getRut().trim().toUpperCase());
+        if (propietario.isEmpty()) {
+            return Optional.empty();
+        }
+
+        propiedad.setPropietario(propietario.get());
+        return Optional.of(propiedadesRepository.save(propiedad));
     }
 
     public void eliminarPropiedades(Long id) {
         propiedadesRepository.deleteById(id);
     }
 
-    public Optional<propiedad> asignarArrendatario(Long propiedadId, String arrendatarioRut) {
-        String rutLimpio = arrendatarioRut.trim().toUpperCase(); // Forzamos mayúscula automática
-
+    public Optional<propiedad> asignarPropietario(Long propiedadId, String propietarioRut) {
+        String rutLimpio = propietarioRut.trim().toUpperCase();
         Optional<propiedad> propiedadOpt = propiedadesRepository.findById(propiedadId);
-        Optional<arrendatario> arrendatarioOpt = arrendatariosRepository.findById(rutLimpio);
+        Optional<propietario> propietarioOpt = propietariosRepository.findById(rutLimpio);
 
-        if (propiedadOpt.isPresent() && arrendatarioOpt.isPresent()) {
+        if (propiedadOpt.isPresent() && propietarioOpt.isPresent()) {
             propiedad propiedadReal = propiedadOpt.get();
-            propiedadReal.setArrendatario(arrendatarioOpt.get());
+            propiedadReal.setPropietario(propietarioOpt.get());
             return Optional.of(propiedadesRepository.save(propiedadReal));
         }
         return Optional.empty();

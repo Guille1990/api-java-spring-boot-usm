@@ -1,0 +1,261 @@
+{
+  "info": {
+    "_postman_id": "b84c9a60-0d02-4f7d-91b1-bbf974ff08a0",
+    "name": "Arriendos Ya API",
+    "description": "Coleccion para consumir la API de Arriendos Ya.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "propietarioRut", "value": "12345678-9" },
+    { "key": "arrendatarioRut", "value": "98765432-1" },
+    { "key": "propiedadId", "value": "1" },
+    { "key": "arriendoId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Propietarios",
+      "item": [
+        {
+          "name": "Listar propietarios",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/propietarios"
+          }
+        },
+        {
+          "name": "Obtener propietario por RUT",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/propietarios/{{propietarioRut}}"
+          }
+        },
+        {
+          "name": "Crear propietario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rut\": \"{{propietarioRut}}\",\n  \"nombre\": \"Ana\",\n  \"apellido\": \"Gonzalez\",\n  \"telefono\": \"+56912345678\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/propietarios"
+          }
+        },
+        {
+          "name": "Actualizar propietario",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana Maria\",\n  \"apellido\": \"Gonzalez\",\n  \"telefono\": \"+56987654321\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/propietarios/{{propietarioRut}}"
+          }
+        },
+        {
+          "name": "Eliminar propietario",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/propietarios/{{propietarioRut}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Arrendatarios",
+      "item": [
+        {
+          "name": "Listar arrendatarios",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/arrendatarios"
+          }
+        },
+        {
+          "name": "Obtener arrendatario por RUT",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/arrendatarios/{{arrendatarioRut}}"
+          }
+        },
+        {
+          "name": "Crear arrendatario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rut\": \"{{arrendatarioRut}}\",\n  \"nombre\": \"Luis\",\n  \"apellido\": \"Perez\",\n  \"telefono\": \"+56911223344\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/arrendatarios"
+          }
+        },
+        {
+          "name": "Actualizar arrendatario",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Luis Alberto\",\n  \"apellido\": \"Perez\",\n  \"telefono\": \"+56944332211\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/arrendatarios/{{arrendatarioRut}}"
+          }
+        },
+        {
+          "name": "Eliminar arrendatario",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/arrendatarios/{{arrendatarioRut}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Propiedades",
+      "item": [
+        {
+          "name": "Listar propiedades",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/propiedades"
+          }
+        },
+        {
+          "name": "Obtener propiedad por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/propiedades/{{propiedadId}}"
+          }
+        },
+        {
+          "name": "Crear propiedad",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"direccion\": \"Av. Libertad 123\",\n  \"comuna\": \"Vina del Mar\",\n  \"ciudad\": \"Vina del Mar\",\n  \"region\": \"Valparaiso\",\n  \"numeroHabitaciones\": 3,\n  \"numeroBanos\": 2,\n  \"precioArriendo\": 650000,\n  \"disponible\": true,\n  \"propietario\": {\n    \"rut\": \"{{propietarioRut}}\"\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/propiedades"
+          }
+        },
+        {
+          "name": "Actualizar propiedad",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"direccion\": \"Av. Libertad 456\",\n  \"comuna\": \"Vina del Mar\",\n  \"ciudad\": \"Vina del Mar\",\n  \"region\": \"Valparaiso\",\n  \"numeroHabitaciones\": 4,\n  \"numeroBanos\": 2,\n  \"precioArriendo\": 720000,\n  \"disponible\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/propiedades/{{propiedadId}}"
+          }
+        },
+        {
+          "name": "Asignar propietario a propiedad",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/propiedades/{{propiedadId}}/asignar-propietario/{{propietarioRut}}"
+          }
+        },
+        {
+          "name": "Eliminar propiedad",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/propiedades/{{propiedadId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Arriendos",
+      "item": [
+        {
+          "name": "Listar arriendos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/arriendos"
+          }
+        },
+        {
+          "name": "Listar arriendos por propiedad",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/arriendos/propiedad/{{propiedadId}}"
+          }
+        },
+        {
+          "name": "Listar arriendos por arrendatario",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/arriendos/arrendatario/{{arrendatarioRut}}"
+          }
+        },
+        {
+          "name": "Crear arriendo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propiedad\": {\n    \"id\": {{propiedadId}}\n  },\n  \"arrendatario\": {\n    \"rut\": \"{{arrendatarioRut}}\"\n  },\n  \"fechaInicio\": \"2026-07-01\",\n  \"activo\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/arriendos"
+          }
+        },
+        {
+          "name": "Finalizar arriendo",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/arriendos/{{arriendoId}}/finalizar?fechaTermino=2026-07-31",
+              "query": [{ "key": "fechaTermino", "value": "2026-07-31" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Eventos",
+      "item": [
+        {
+          "name": "Listar eventos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/eventos"
+          }
+        },
+        {
+          "name": "Listar eventos por propiedad",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/eventos/propiedad/{{propiedadId}}"
+          }
+        },
+        {
+          "name": "Crear evento",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"MANTENCION\",\n  \"descripcion\": \"Revision preventiva de la propiedad\",\n  \"fecha\": \"2026-07-25T17:55:36-04:00\",\n  \"url\": \"https://example.com/documentos/mantencion\",\n  \"propiedad\": {\n    \"id\": {{propiedadId}}\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/eventos"
+          }
+        }
+      ]
+    }
+  ]
+}

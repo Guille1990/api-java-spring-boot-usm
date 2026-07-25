@@ -32,8 +32,10 @@ public class PropiedadesController {
 
     // POST http://localhost:3000/api/propiedades
     @PostMapping
-    public propiedad crear(@RequestBody propiedad propiedad) {
-        return propiedadesService.guardarPropiedades(propiedad);
+    public ResponseEntity<propiedad> crear(@RequestBody propiedad propiedad) {
+        return propiedadesService.guardarPropiedades(propiedad)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     // PUT http://localhost:3000/api/propiedades/{id}
@@ -48,9 +50,10 @@ public class PropiedadesController {
             propiedad.setNumeroBanos(datosActualizados.getNumeroBanos());
             propiedad.setPrecioArriendo(datosActualizados.getPrecioArriendo());
             propiedad.setDisponible(datosActualizados.getDisponible());
-            
-            propiedad guardada = propiedadesService.guardarPropiedades(propiedad);
-            return ResponseEntity.ok(guardada);
+
+            return propiedadesService.guardarPropiedades(propiedad)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.badRequest().build());
         }).orElse(ResponseEntity.notFound().build());
     }
 
@@ -63,16 +66,16 @@ public class PropiedadesController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{propiedadId}/asignar-arrendatario/{arrendatarioRut}")
-    public ResponseEntity<propiedad> asignarArrendatario(
+    @PutMapping("/{propiedadId}/asignar-propietario/{propietarioRut}")
+    public ResponseEntity<propiedad> asignarPropietario(
             @PathVariable Long propiedadId,
-            @PathVariable String arrendatarioRut) {
-        java.util.Optional<propiedad> propiedadActualizada = propiedadesService.asignarArrendatario(propiedadId, arrendatarioRut);
+            @PathVariable String propietarioRut) {
+        java.util.Optional<propiedad> propiedadActualizada = propiedadesService.asignarPropietario(propiedadId, propietarioRut);
 
         if (propiedadActualizada.isPresent()) {
             return ResponseEntity.ok(propiedadActualizada.get());
         } else {
-            return ResponseEntity.notFound().build(); // Retorna 404 si la propiedad o el RUT no existen
+            return ResponseEntity.notFound().build();
         }
     }
     

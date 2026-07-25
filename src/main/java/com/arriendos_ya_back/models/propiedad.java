@@ -1,5 +1,6 @@
 package com.arriendos_ya_back.models;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -35,9 +36,13 @@ public class propiedad {
 
     private Boolean disponible = true;
 
-    @ManyToOne
-    @JoinColumn(name = "arrendatario", referencedColumnName = "rut")
-    private arrendatario arrendatario;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "propietario_rut", referencedColumnName = "rut", nullable = false)
+    private propietario propietario;
+
+    @OneToMany(mappedBy = "propiedad")
+    @JsonIgnore
+    private List<arriendo> arriendos;
 
     @OneToMany(mappedBy = "propiedad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -72,8 +77,11 @@ public class propiedad {
     public Boolean getDisponible() { return disponible; }
     public void setDisponible(Boolean disponible) { this.disponible = disponible; }
 
-    public arrendatario getArrendatario() { return arrendatario; }
-    public void setArrendatario(arrendatario arrendatario) { this.arrendatario = arrendatario; }
+    public propietario getPropietario() { return propietario; }
+    public void setPropietario(propietario propietario) { this.propietario = propietario; }
+
+    public List<arriendo> getArriendos() { return arriendos; }
+    public void setArriendos(List<arriendo> arriendos) { this.arriendos = arriendos; }
 
     public List<evento> getEventos() { return eventos; }
     public void setEventos(List<evento> eventos) { this.eventos = eventos; }

@@ -1,6 +1,8 @@
 package com.arriendos_ya_back.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "arrendatarios")
@@ -19,6 +21,9 @@ public class arrendatario {
     @Column(nullable = false, length = 20)
     private String telefono;
 
+    @OneToMany(mappedBy = "arrendatario")
+    @JsonIgnore
+    private List<arriendo> arriendos;
 
     public String getRut() { return rut; }
     public void setRut(String rut) { this.rut = rut; }
@@ -31,4 +36,7 @@ public class arrendatario {
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public List<arriendo> getArriendos() { return arriendos; }
+    public void setArriendos(List<arriendo> arriendos) { this.arriendos = arriendos; }
 }
