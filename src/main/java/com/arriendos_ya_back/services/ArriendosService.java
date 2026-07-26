@@ -69,4 +69,21 @@ public class ArriendosService {
             return arriendosRepository.save(arriendo);
         });
     }
-}
+
+    public Optional<arriendo> actualizar(Long id, arriendo datos) {
+        return arriendosRepository.findById(id).map(existente -> {
+            if (datos.getDiaPago() != null) {
+                existente.setDiaPago(datos.getDiaPago());
+            }
+            if (datos.getReajusteSemestral() != null) {
+                existente.setReajusteSemestral(datos.getReajusteSemestral());
+            }
+            if (datos.getActivo() != null) {
+                existente.setActivo(datos.getActivo());
+            }
+            if (datos.getFechaTermino() != null) {
+                existente.setFechaTermino(datos.getFechaTermino());
+            }
+            return arriendosRepository.save(existente);
+        });
+    }

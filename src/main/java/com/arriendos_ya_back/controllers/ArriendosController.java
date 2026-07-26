@@ -44,6 +44,16 @@ public class ArriendosController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> actualizar(@PathVariable Long id, @Valid @RequestBody arriendo datos) {
+        var actualizado = arriendosService.actualizar(id, datos);
+        if (actualizado.isPresent()) {
+            return ResponseEntity.ok(actualizado.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PutMapping("/{id}/finalizar")
     public ResponseEntity<arriendo> finalizar(
             @PathVariable Long id,

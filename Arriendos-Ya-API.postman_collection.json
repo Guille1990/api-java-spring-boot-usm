@@ -215,6 +215,19 @@
           }
         },
         {
+          "name": "Actualizar arriendo",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"diaPago\": \"DIA_10\",\n  \"reajusteSemestral\": 5,\n  \"activo\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/arriendos/{{arriendoId}}"
+          }
+        },
+        {
           "name": "Finalizar arriendo",
           "request": {
             "method": "PUT",
