@@ -8,6 +8,7 @@ com/arriendos_ya_back/repositories/MovimientosRepository.class
 com/arriendos_ya_back/controllers/ArriendosController.class
 com/arriendos_ya_back/models/movimiento.class
 com/arriendos_ya_back/repositories/PropiedadesRepository.class
+com/arriendos_ya_back/models/TipoMovimiento.class
 com/arriendos_ya_back/controllers/ErrorResponse.class
 com/arriendos_ya_back/repositories/ArriendosRepository.class
 com/arriendos_ya_back/services/ArriendosService.class
@@ -22,6 +23,7 @@ com/arriendos_ya_back/services/PropietariosService.class
 com/arriendos_ya_back/controllers/ArrendatariosController.class
 com/arriendos_ya_back/services/AzureBlobService.class
 com/arriendos_ya_back/models/arriendo.class
+com/arriendos_ya_back/models/DiaPago.class
 com/arriendos_ya_back/repositories/ArrendatariosRepository.class
 com/arriendos_ya_back/controllers/PropietariosController.class
 com/arriendos_ya_back/models/propietario.class

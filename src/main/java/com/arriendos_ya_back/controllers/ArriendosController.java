@@ -2,6 +2,7 @@ package com.arriendos_ya_back.controllers;
 
 import com.arriendos_ya_back.models.arriendo;
 import com.arriendos_ya_back.services.ArriendosService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,13 @@ public class ArriendosController {
     }
 
     @PostMapping
-    public ResponseEntity<arriendo> crear(@RequestBody arriendo nuevoArriendo) {
-        return arriendosService.guardar(nuevoArriendo)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.badRequest().build());
+    public ResponseEntity<Object> crear(@Valid @RequestBody arriendo nuevoArriendo) {
+        var guardado = arriendosService.guardar(nuevoArriendo);
+        if (guardado.isPresent()) {
+            return ResponseEntity.ok(guardado.get());
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}/finalizar")

@@ -95,4 +95,28 @@ public class MovimientosController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    // PUT http://localhost:3000/api/movimientos/{id}/comprobante
+    @PutMapping("/{id}/comprobante")
+    public ResponseEntity<?> actualizarComprobante(
+            @PathVariable Long id,
+            @RequestParam(value = "comprobante", required = false) MultipartFile comprobante) {
+        try {
+            if (comprobante == null || comprobante.isEmpty()) {
+                return ResponseEntity.badRequest().body(
+                    new ErrorResponse("El archivo de comprobante es requerido"));
+            }
+
+            java.util.Optional<movimiento> actualizado = movimientosService.actualizarComprobante(id, comprobante);
+            if (actualizado.isPresent()) {
+                return ResponseEntity.ok(actualizado.get());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(
+                new ErrorResponse("Error al actualizar comprobante: " + e.getMessage()));
+        }
+    }
 }

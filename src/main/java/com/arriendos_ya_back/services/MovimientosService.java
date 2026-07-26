@@ -99,4 +99,24 @@ public class MovimientosService {
         }
         return false;
     }
+
+    public Optional<movimiento> actualizarComprobante(Long id, MultipartFile comprobante) throws IOException {
+        Optional<movimiento> movimientoOpt = movimientosRepository.findById(id);
+        if (movimientoOpt.isEmpty() || comprobante == null || comprobante.isEmpty()) {
+            return Optional.empty();
+        }
+
+        movimiento existente = movimientoOpt.get();
+
+        // Eliminar comprobante anterior si existe
+        if (existente.getUrlComprobante() != null && !existente.getUrlComprobante().isEmpty()) {
+            azureBlobService.eliminarArchivo(existente.getUrlComprobante());
+        }
+
+        // Subir nuevo comprobante
+        String urlNueva = azureBlobService.subirArchivo(comprobante);
+        existente.setUrlComprobante(urlNueva);
+
+        return Optional.of(movimientosRepository.save(existente));
+    }
 }

@@ -330,8 +330,24 @@
             },
             "url": "{{baseUrl}}/api/movimientos/{{movimientoId}}"
           }
-        },
-        {
+        },        {
+          "name": "Actualizar comprobante de movimiento",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "comprobante",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/movimientos/{{movimientoId}}/comprobante"
+          }
+        },        {
           "name": "Eliminar movimiento",
           "request": {
             "method": "DELETE",

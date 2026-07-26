@@ -1,4 +1,5 @@
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/services/PropietariosService.java
+/home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/models/TipoMovimiento.java
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/services/PropiedadesService.java
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/services/ArriendosService.java
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/repositories/PropiedadesRepository.java
@@ -20,6 +21,7 @@
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/controllers/EventosController.java
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/controllers/MovimientosController.java
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/repositories/EventosRepository.java
+/home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/models/DiaPago.java
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/repositories/MovimientosRepository.java
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/repositories/PropietariosRepository.java
 /home/guillermin/desarrollo/java/api-java-spring-boot-usm/src/main/java/com/arriendos_ya_back/controllers/ArriendosController.java
