@@ -10,7 +10,8 @@
     { "key": "propietarioRut", "value": "12345678-9" },
     { "key": "arrendatarioRut", "value": "98765432-1" },
     { "key": "propiedadId", "value": "1" },
-    { "key": "arriendoId", "value": "1" }
+    { "key": "arriendoId", "value": "1" },
+    { "key": "movimientoId", "value": "1" }
   ],
   "item": [
     {
@@ -253,6 +254,88 @@
               "options": { "raw": { "language": "json" } }
             },
             "url": "{{baseUrl}}/api/eventos"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Movimientos",
+      "item": [
+        {
+          "name": "Listar movimientos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/movimientos"
+          }
+        },
+        {
+          "name": "Obtener movimiento por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/movimientos/{{movimientoId}}"
+          }
+        },
+        {
+          "name": "Listar movimientos por propiedad",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/movimientos/propiedad/{{propiedadId}}"
+          }
+        },
+        {
+          "name": "Crear movimiento",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"ingreso\",\n  \"concepto\": \"Pago arriendo mes julio\",\n  \"monto\": 350000,\n  \"fecha\": \"2026-07-25T12:00:00-04:00\",\n  \"urlComprobante\": \"https://example.com/comprobantes/julio.pdf\",\n  \"propiedad\": {\n    \"id\": {{propiedadId}}\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/movimientos"
+          }
+        },
+        {
+          "name": "Crear movimiento con comprobante (Azure)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "movimiento",
+                  "value": "{\"tipo\":\"ingreso\",\"concepto\":\"Pago arriendo julio\",\"monto\":350000,\"propiedad\":{\"id\":{{propiedadId}}}}",
+                  "type": "text"
+                },
+                {
+                  "key": "comprobante",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/movimientos/con-comprobante"
+          }
+        },
+        {
+          "name": "Actualizar movimiento",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"egreso\",\n  \"concepto\": \"Reparacion gasifero\",\n  \"monto\": 85000,\n  \"fecha\": \"2026-07-25T15:00:00-04:00\",\n  \"urlComprobante\": \"https://example.com/comprobantes/reparacion.pdf\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/api/movimientos/{{movimientoId}}"
+          }
+        },
+        {
+          "name": "Eliminar movimiento",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/movimientos/{{movimientoId}}"
           }
         }
       ]

@@ -47,6 +47,10 @@ public class propiedad {
     @OneToMany(mappedBy = "propiedad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<evento> eventos;
+
+    @OneToMany(mappedBy = "propiedad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<movimiento> movimientos;
     
     // --- GETTERS Y SETTERS ---
 
@@ -85,4 +89,7 @@ public class propiedad {
 
     public List<evento> getEventos() { return eventos; }
     public void setEventos(List<evento> eventos) { this.eventos = eventos; }
+
+    public List<movimiento> getMovimientos() { return movimientos; }
+    public void setMovimientos(List<movimiento> movimientos) { this.movimientos = movimientos; }
 }
