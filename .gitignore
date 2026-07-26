@@ -1,2 +1,23 @@
 .vscode/
 .env
+
+# Maven
+/target/
+*.jar
+
+# IDE
+.idea/
+.classpath
+.project
+.settings/
+
+# Logs
+/logs/
+*.log
+
+# Uploads locales
+/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
