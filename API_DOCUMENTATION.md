@@ -39,7 +39,8 @@ curl -X POST "http://localhost:3000/api/propietarios" \
     "rut": "12345678-9",
     "nombre": "Ana",
     "apellido": "Gonzalez",
-    "telefono": "+56912345678"
+    "telefono": "+56912345678",
+    "email": "ana.gonzalez@example.com"
   }'
 ```
 
@@ -50,7 +51,8 @@ curl -X PUT "http://localhost:3000/api/propietarios/12345678-9" \
   -d '{
     "nombre": "Ana Maria",
     "apellido": "Gonzalez",
-    "telefono": "+56987654321"
+    "telefono": "+56987654321",
+    "email": "ana.maria@example.com"
   }'
 ```
 
@@ -83,7 +85,8 @@ curl -X POST "http://localhost:3000/api/arrendatarios" \
     "rut": "98765432-1",
     "nombre": "Luis",
     "apellido": "Perez",
-    "telefono": "+56911223344"
+    "telefono": "+56911223344",
+    "email": "luis.perez@example.com"
   }'
 ```
 
@@ -94,7 +97,8 @@ curl -X PUT "http://localhost:3000/api/arrendatarios/98765432-1" \
   -d '{
     "nombre": "Luis Alberto",
     "apellido": "Perez",
-    "telefono": "+56944332211"
+    "telefono": "+56944332211",
+    "email": "luis.alberto@example.com"
   }'
 ```
 
@@ -202,6 +206,47 @@ curl -X POST "http://localhost:3000/api/arriendos" \
     "reajusteSemestral": 5,
     "activo": true
   }'
+```
+
+#### Explicación del campo `diaPago`
+
+El campo `diaPago` es un **enum** que define el día del mes en que el arrendatario debe realizar el pago del arriendo.
+
+**Valores permitidos:**
+- `DIA_5` → Pago el día 5 de cada mes
+- `DIA_10` → Pago el día 10 de cada mes
+- `DIA_15` → Pago el día 15 de cada mes
+- `DIA_20` → Pago el día 20 de cada mes
+- `DIA_25` → Pago el día 25 de cada mes
+- `DIA_30` → Pago el día 30 de cada mes
+
+**Notas:**
+- El valor debe enviarse en **MAYÚSCULAS** (ej: `DIA_10`, no `dia_10`)
+- No se puede usar `DIA_31` porque no todos los meses tienen 31 días
+- Se almacena en la BD como un número ordinal (0-5)
+- Es **obligatorio** al crear un arriendo
+
+**Ejemplos válidos:**
+```json
+{
+  "diaPago": "DIA_5",
+  ...
+}
+```
+
+```json
+{
+  "diaPago": "DIA_30",
+  ...
+}
+```
+
+**Ejemplo inválido (generará error):**
+```json
+{
+  "diaPago": "dia_15",
+  ...
+}
 ```
 
 ### Actualizar arriendo
@@ -323,24 +368,62 @@ curl -X DELETE "http://localhost:3000/api/movimientos/1"
 ## Enums y Valores Permitidos
 
 ### TipoMovimiento
+Define el tipo de movimiento financiero de una propiedad.
+
 ```
-INGRESO
-EGRESO
+INGRESO  → Dinero que entra (ej: pago de arriendo)
+EGRESO   → Dinero que sale (ej: reparaciones, servicios)
+```
+
+**Ejemplo:**
+```json
+{
+  "tipo": "INGRESO",
+  "concepto": "Pago arriendo julio",
+  "monto": 350000
+}
 ```
 
 ### DiaPago
+Define el día del mes en que debe pagarse el arriendo.
+
 ```
-DIA_5
-DIA_10
-DIA_15
-DIA_20
-DIA_25
-DIA_30
+DIA_5   → Día 5 de cada mes
+DIA_10  → Día 10 de cada mes
+DIA_15  → Día 15 de cada mes
+DIA_20  → Día 20 de cada mes
+DIA_25  → Día 25 de cada mes
+DIA_30  → Día 30 de cada mes
 ```
 
+**Ejemplo:**
+```json
+{
+  "diaPago": "DIA_15",
+  "propiedad": { "id": 1 },
+  "arrendatario": { "rut": "98765432-1" }
+}
+```
+
+**¿Por qué solo hasta DIA_30?**
+- No todos los meses tienen 31 días
+- Febrero solo tiene 28/29 días
+- Usar DIA_30 garantiza que funcione en todos los meses
+
 ### Rango Reajuste Semestral
-- Mínimo: 1
-- Máximo: 100
+Porcentaje de aumento que se aplica cada 6 meses al arriendo.
+
+- **Mínimo:** 1
+- **Máximo:** 100
+- **Tipo:** Número entero (Integer)
+
+**Ejemplo:**
+```json
+{
+  "reajusteSemestral": 5
+}
+```
+Esto significa un aumento del 5% cada semestre.
 
 ---
 
@@ -368,12 +451,12 @@ BASE_URL="http://localhost:3000/api"
 # 1. Crear propietario
 PROPIETARIO=$(curl -s -X POST "$BASE_URL/propietarios" \
   -H "Content-Type: application/json" \
-  -d '{"rut":"12345678-9","nombre":"Juan","apellido":"Perez","telefono":"+56912345678"}')
+  -d '{"rut":"12345678-9","nombre":"Juan","apellido":"Perez","telefono":"+56912345678","email":"juan.perez@example.com"}')
 
 # 2. Crear arrendatario
 ARRENDATARIO=$(curl -s -X POST "$BASE_URL/arrendatarios" \
   -H "Content-Type: application/json" \
-  -d '{"rut":"98765432-1","nombre":"Maria","apellido":"Gonzalez","telefono":"+56911223344"}')
+  -d '{"rut":"98765432-1","nombre":"Maria","apellido":"Gonzalez","telefono":"+56911223344","email":"maria.gonzalez@example.com"}')
 
 # 3. Crear propiedad
 PROPIEDAD=$(curl -s -X POST "$BASE_URL/propiedades" \
@@ -398,6 +481,7 @@ echo "Flujo completado!"
 ## Notas Importantes
 
 - **Validación de RUT**: Los RUTs deben incluir guion (ej: 12345678-9)
+- **Email obligatorio**: En propietarios y arrendatarios el campo `email` es requerido
 - **Fechas**: Usar formato ISO 8601 (ej: 2026-07-25T12:00:00-04:00)
 - **Almacenamiento de imágenes**: Los comprobantes se suben a Azure Blob Storage
 - **Enums**: Enviar en mayúsculas (ej: "INGRESO", "DIA_10")

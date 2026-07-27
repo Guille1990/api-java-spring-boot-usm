@@ -21,6 +21,9 @@ public class arrendatario {
     @Column(nullable = false, length = 20)
     private String telefono;
 
+    @Column(nullable = false, length = 120)
+    private String email;
+
     @OneToMany(mappedBy = "arrendatario")
     @JsonIgnore
     private List<arriendo> arriendos;
@@ -36,6 +39,9 @@ public class arrendatario {
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
     public List<arriendo> getArriendos() { return arriendos; }
     public void setArriendos(List<arriendo> arriendos) { this.arriendos = arriendos; }

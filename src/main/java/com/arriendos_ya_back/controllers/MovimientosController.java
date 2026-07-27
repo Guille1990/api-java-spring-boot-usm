@@ -45,9 +45,9 @@ public class MovimientosController {
 
     // GET http://localhost:3000/api/movimientos/propiedad/{propiedadId}
     @GetMapping("/propiedad/{propiedadId}")
-    public ResponseEntity<List<movimiento>> obtenerPorPropiedad(@PathVariable Long propiedadId) {
-        List<movimiento> movimientos = movimientosService.obtenerPorPropiedad(propiedadId);
-        return ResponseEntity.ok(movimientos);
+    public ResponseEntity<MovimientosService.ResumenMovimientosPropiedad> obtenerPorPropiedad(@PathVariable Long propiedadId) {
+        MovimientosService.ResumenMovimientosPropiedad resumen = movimientosService.obtenerResumenPorPropiedad(propiedadId);
+        return ResponseEntity.ok(resumen);
     }
 
     // POST http://localhost:3000/api/movimientos

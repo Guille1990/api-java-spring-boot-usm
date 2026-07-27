@@ -43,6 +43,7 @@ public class PropietariosController {
             propietario.setNombre(datosActualizados.getNombre());
             propietario.setApellido(datosActualizados.getApellido());
             propietario.setTelefono(datosActualizados.getTelefono());
+            propietario.setEmail(datosActualizados.getEmail());
             
             propietario guardado = propietariosRepositoryService.guardar(propietario);
             return ResponseEntity.ok(guardado);

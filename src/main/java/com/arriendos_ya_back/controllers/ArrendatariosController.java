@@ -43,6 +43,7 @@ public class ArrendatariosController {
             arrendatario.setNombre(datosActualizados.getNombre());
             arrendatario.setApellido(datosActualizados.getApellido());
             arrendatario.setTelefono(datosActualizados.getTelefono());
+            arrendatario.setEmail(datosActualizados.getEmail());
             
             arrendatario guardado = arrendatariosService.guardar(arrendatario);
             return ResponseEntity.ok(guardado);
