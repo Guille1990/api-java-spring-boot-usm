@@ -14,6 +14,7 @@ http://localhost:3000/api
 4. [Arriendos](#arriendos)
 5. [Eventos](#eventos)
 6. [Movimientos](#movimientos)
+7. [Reportes](#reportes)
 
 ---
 
@@ -362,6 +363,87 @@ curl -X PUT "http://localhost:3000/api/movimientos/1/comprobante" \
 ```bash
 curl -X DELETE "http://localhost:3000/api/movimientos/1"
 ```
+
+---
+
+## Reportes
+
+### Reporte mensual por propiedad
+```bash
+curl -X GET "http://localhost:3000/api/reportes/propiedad/1/mensual?anio=2026&mes=7" \
+  -H "Content-Type: application/json"
+```
+
+### Respuesta esperada (ejemplo)
+```json
+{
+  "propiedadId": 1,
+  "direccion": "Av. Libertad 123",
+  "comuna": "Vina del Mar",
+  "ciudad": "Vina del Mar",
+  "region": "Valparaiso",
+  "mes": 7,
+  "anio": 2026,
+  "totalIngresos": 5920000.0,
+  "totalEgresos": 400000.0,
+  "balance": 5520000.0,
+  "diasTotalesMes": 31,
+  "diasOcupados": 31,
+  "porcentajeOcupacion": 100.0,
+  "movimientos": [
+    {
+      "id": 9,
+      "concepto": "Otro concepto",
+      "tipo": "INGRESO",
+      "monto": 70000.0,
+      "fecha": "2026-07-26",
+      "urlComprobante": "https://..."
+    }
+  ],
+  "eventos": [
+    {
+      "id": 2,
+      "tipo": "MANTENCION",
+      "descripcion": "Revision preventiva",
+      "fecha": "2026-07-25",
+      "url": "https://..."
+    }
+  ]
+}
+```
+
+### Enviar reporte mensual por correo
+```bash
+curl -X POST "http://localhost:3000/api/reportes/propiedad/1/mensual/enviar?anio=2026&mes=7" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "destinatarios": [
+      "dueno@example.com",
+      "admin@example.com"
+    ]
+  }'
+```
+
+Respuesta exitosa:
+```json
+{
+  "message": "Reporte enviado correctamente"
+}
+```
+
+El correo se envia en formato HTML y adjunta un PDF del reporte mensual.
+
+Variables de entorno requeridas para correo SMTP:
+- `MAIL_HOST`
+- `MAIL_PORT`
+- `MAIL_USER`
+- `MAIL_PASSWORD`
+- `MAIL_FROM` (opcional, por defecto `no-reply@arriendosya.local`)
+
+**Notas:**
+- `mes` debe estar entre `1` y `12`.
+- Si la propiedad no existe, responde `404 Not Found`.
+- Si el mes es inválido, responde `400 Bad Request`.
 
 ---
 
