@@ -35,4 +35,24 @@ public interface MovimientosRepository extends JpaRepository<movimiento, Long> {
          @Param("tipo") TipoMovimiento tipo,
          @Param("inicio") ZonedDateTime inicio,
          @Param("fin") ZonedDateTime fin);
+
+    @Query("SELECT m.propiedad.id, m.tipo, COALESCE(SUM(m.monto), 0) " +
+        "FROM movimiento m " +
+        "WHERE m.propiedad.id IN :propiedadIds " +
+        "AND m.fecha >= :inicio " +
+        "AND m.fecha < :fin " +
+        "GROUP BY m.propiedad.id, m.tipo")
+    List<Object[]> sumMontosByPropiedadesAndFechaRango(
+         @Param("propiedadIds") List<Long> propiedadIds,
+         @Param("inicio") ZonedDateTime inicio,
+         @Param("fin") ZonedDateTime fin);
+
+    @Query("SELECT m FROM movimiento m " +
+        "WHERE m.propiedad.id IN :propiedadIds " +
+        "AND m.fecha >= :inicio " +
+        "AND m.fecha < :fin")
+    List<movimiento> findByPropiedadIdsAndFechaRango(
+         @Param("propiedadIds") List<Long> propiedadIds,
+         @Param("inicio") ZonedDateTime inicio,
+         @Param("fin") ZonedDateTime fin);
 }

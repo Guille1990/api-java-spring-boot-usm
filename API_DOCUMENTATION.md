@@ -445,6 +445,106 @@ Variables de entorno requeridas para correo SMTP:
 - Si la propiedad no existe, responde `404 Not Found`.
 - Si el mes es inválido, responde `400 Bad Request`.
 
+### Reporte anual por propietarios (uno o todos)
+`propietarioRut` es opcional:
+- Si se envia, retorna el reporte de ese propietario.
+- Si no se envia, retorna el consolidado de todos los propietarios.
+
+Todos los propietarios:
+```bash
+curl -X GET "http://localhost:3000/api/reportes/propietarios/anual?anio=2026" \
+  -H "Content-Type: application/json"
+```
+
+Un propietario en particular:
+```bash
+curl -X GET "http://localhost:3000/api/reportes/propietarios/anual?anio=2026&propietarioRut=12345678-9" \
+  -H "Content-Type: application/json"
+```
+
+Respuesta esperada (ejemplo):
+```json
+{
+  "anio": 2026,
+  "propietarioRutFiltro": null,
+  "cantidadPropietarios": 2,
+  "totalIngresos": 820000.0,
+  "totalEgresos": 160000.0,
+  "balance": 660000.0,
+  "resumenMensualGlobal": [
+    {
+      "mes": 1,
+      "totalIngresos": 100000.0,
+      "totalEgresos": 20000.0,
+      "balance": 80000.0
+    }
+  ],
+  "propietarios": [
+    {
+      "propietarioRut": "12345678-9",
+      "propietarioNombreCompleto": "Ana Gonzalez",
+      "anio": 2026,
+      "cantidadPropiedades": 2,
+      "totalIngresos": 500000.0,
+      "totalEgresos": 120000.0,
+      "balance": 380000.0,
+      "resumenMensual": [
+        {
+          "mes": 1,
+          "totalIngresos": 60000.0,
+          "totalEgresos": 10000.0,
+          "balance": 50000.0
+        }
+      ],
+      "propiedades": [
+        {
+          "propiedadId": 1,
+          "direccion": "Av. Libertad 123",
+          "comuna": "Vina del Mar",
+          "ciudad": "Vina del Mar",
+          "region": "Valparaiso",
+          "totalIngresos": 350000.0,
+          "totalEgresos": 60000.0,
+          "balance": 290000.0
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Notas:**
+- Si se envia `propietarioRut` y no existe, responde `404 Not Found`.
+- El desglose mensual entrega 12 filas (meses 1 a 12).
+
+### Exportar reporte anual por propietarios en PDF
+```bash
+curl -X GET "http://localhost:3000/api/reportes/propietarios/anual/exportar/pdf?anio=2026" \
+  -H "Content-Type: application/json" \
+  --output reporte-propietarios.pdf
+```
+
+Con propietario especifico:
+```bash
+curl -X GET "http://localhost:3000/api/reportes/propietarios/anual/exportar/pdf?anio=2026&propietarioRut=12345678-9" \
+  -H "Content-Type: application/json" \
+  --output reporte-propietario-12345678-9.pdf
+```
+
+### Exportar reporte anual por propietarios en Excel
+```bash
+curl -X GET "http://localhost:3000/api/reportes/propietarios/anual/exportar/excel?anio=2026" \
+  -H "Content-Type: application/json" \
+  --output reporte-propietarios.xlsx
+```
+
+Con propietario especifico:
+```bash
+curl -X GET "http://localhost:3000/api/reportes/propietarios/anual/exportar/excel?anio=2026&propietarioRut=12345678-9" \
+  -H "Content-Type: application/json" \
+  --output reporte-propietario-12345678-9.xlsx
+```
+
 ---
 
 ## Enums y Valores Permitidos
